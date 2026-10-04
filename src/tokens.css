@@ -1,0 +1,31 @@
+/* One appearance per page. Layers: content 0/1, header 2, skip link 4, native dialog top layer. */
+:root {
+  color-scheme: dark;
+  --surface: #171b19;
+  --raised: #252c27;
+  --text: #e8ede4;
+  --muted: #a0aaa1;
+  --accent: #b8d4b3;
+  --line: #39423b;
+  --header: rgb(23 27 25 / .87);
+  --desk-glow: rgb(91 110 82 / .13);
+  --cable: #2d352e;
+  --note-surface: #242b25;
+  --note-border: #394339;
+  --tape: #7a8d6277;
+}
+[data-theme='light'] {
+  color-scheme: light;
+  --surface: #e9ede6;
+  --raised: #d9e1d5;
+  --text: #28342a;
+  --muted: #5a675b;
+  --accent: #416642;
+  --line: #b5c2b0;
+  --header: rgb(233 237 230 / .9);
+  --desk-glow: rgb(130 153 119 / .14);
+  --cable: #bec8b8;
+  --note-surface: #e1e7db;
+  --note-border: #c1ccb9;
+  --tape: #91a27a88;
+}

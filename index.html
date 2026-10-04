@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#171b19" />
+    <meta name="description" content="Eric Nguyen / Nguyễn Khánh Trình. An open desk of products, agent research, unfinished ideas, and things I'm learning." />
+    <meta property="og:title" content="Eric Nguyen | An open desk" />
+    <meta property="og:description" content="Things I'm building, questions I'm testing, and ideas I haven't figured out yet." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Eric Nguyen | An open desk</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('eric-theme') || 'dark';
+      } catch (_) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
