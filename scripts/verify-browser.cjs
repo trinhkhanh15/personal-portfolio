@@ -212,11 +212,11 @@ async function audit(page, name) {
 
   const viPage = await (await browser.newContext({ locale: 'vi-VN' })).newPage();
   await viPage.goto(base, { waitUntil: 'networkidle' });
-  assert.equal(await viPage.locator('html').getAttribute('lang'), 'vi');
+  assert.equal(await viPage.locator('html').getAttribute('lang'), 'en');
   assert.equal(await page.locator('.email-link').getAttribute('href'), 'mailto:trinhkhanh15082007@gmail.com');
   assert.deepEqual(await page.locator('.social-links a').evaluateAll(els => els.map(el => el.getAttribute('href'))), ['https://github.com/trinhkhanh15', 'https://www.linkedin.com/in/etnguyen1508/', 'https://www.instagram.com/ericnguyen_in/']);
   assert.deepEqual(errors, []);
-  results.push('Vietnamese locale default, exact public contacts, no runtime errors or failed requests');
+  results.push('English default regardless of browser locale, exact public contacts, no runtime errors or failed requests');
 
   await fs.mkdir('artifacts', { recursive: true });
   await fs.writeFile('artifacts/browser-verification.json', JSON.stringify({ passed: true, results, errors, executedAt: new Date().toISOString(), base }, null, 2));

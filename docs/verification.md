@@ -15,7 +15,7 @@ The branching Open Desk website is implemented and running locally. It has not b
 - Desk objects start a route from their own subject. A full-story action opens the detailed native dialog.
 - Popup scroll lock, native focus containment, Escape, and close actions work. Closing restores the originating detail button, chosen route, current scene, and document scroll position within one pixel.
 - All seven direct popup hashes and related-entry navigation work. Language can change inside the reader without losing its selection.
-- Language and theme preferences survive reload. A fresh Vietnamese browser locale selects Vietnamese.
+- Language and theme preferences survive reload. First visits default to English, including browsers with a Vietnamese locale; manual Vietnamese selection remains saved.
 - All five default scenes have usable reading space and visible detail actions at 320, 390, 600, 768, 900, 1024, and 1440 pixels. No horizontal document overflow was detected. All four desk routes and detail popups were activated on mobile.
 - Reduced motion presents complete static vertical pages. Branch insertion, popup access, and accessibility checks pass in that mode.
 - Axe WCAG 2 / 2.1 AA checks pass for the active journey in light/dark, the Vietnamese reader, and the reduced-motion route. These are automated checks, not a complete accessibility certification.

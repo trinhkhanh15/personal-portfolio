@@ -181,7 +181,7 @@ function Reader({ selected, language, onClose, onOpen, onLanguage }: { selected:
 export default function App() {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = readPreference('eric-language');
-    return saved === 'vi' || saved === 'en' ? saved : navigator.language.startsWith('vi') ? 'vi' : 'en';
+    return saved === 'vi' || saved === 'en' ? saved : 'en';
   });
   const [theme, setTheme] = useState<Theme>(() => readPreference('eric-theme') === 'light' ? 'light' : 'dark');
   const [selected, setSelected] = useState<EntryId | null>(readEntry);

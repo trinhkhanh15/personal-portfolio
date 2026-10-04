@@ -80,7 +80,7 @@ The agent-improve-agent direction asks whether a root agent could improve other 
 
 ## Language and voice
 
-Vietnamese and English have full content parity. English should be idiomatic rather than a word-for-word translation. Vietnamese uses friendly, direct first-person writing with 'mình'. No resume prose, generic motivational declarations, invented metrics, or testimonials. The visitor can switch language without losing the selected object. Remember a manually selected language; otherwise use browser language, with English as fallback.
+Vietnamese and English have full content parity. English should be idiomatic rather than a word-for-word translation. Vietnamese uses friendly, direct first-person writing with 'mình'. No resume prose, generic motivational declarations, invented metrics, or testimonials. The visitor can switch language without losing the selected object. Remember a manually selected language; otherwise default to English regardless of browser language.
 
 ## Interaction and accessibility
 
