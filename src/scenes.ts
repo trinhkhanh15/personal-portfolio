@@ -1,10 +1,9 @@
 import type { EntryId, Language } from './content';
 
 export type SceneCopy = { title: string; paragraphs: [string, string]; label: string; question: string };
-export type SceneId = EntryId;
-export const defaultPath: SceneId[] = ['dfriend', 'pilot', 'research', 'idea', 'notebook'];
-export const continuations: Record<SceneId, SceneId[]> = {
-  dfriend: ['dfriend', 'pilot', 'research', 'idea', 'notebook'],
+export const defaultPath: EntryId[] = ['dfriend', 'pilot', 'research', 'idea', 'notebook'];
+export const continuations: Record<EntryId, EntryId[]> = {
+  dfriend: defaultPath,
   seventeen: ['seventeen', 'scores', 'pilot', 'research', 'idea', 'notebook'],
   scores: ['scores', 'pilot', 'research', 'idea', 'notebook'],
   pilot: ['pilot', 'research', 'idea', 'notebook'],
@@ -12,7 +11,7 @@ export const continuations: Record<SceneId, SceneId[]> = {
   idea: ['idea', 'notebook'],
   notebook: ['notebook'],
 };
-export const connections: Record<SceneId, SceneId[]> = {
+export const connections: Record<EntryId, EntryId[]> = {
   dfriend: ['seventeen', 'scores', 'pilot'],
   seventeen: ['scores', 'dfriend'],
   scores: ['pilot', 'dfriend'],
@@ -24,7 +23,7 @@ export const connections: Record<SceneId, SceneId[]> = {
 
 // Preserve the route already travelled. A forward branch replaces only its unread tail.
 // A previously visited node is a return, so it never creates an automatic loop.
-export function branchPath(path: SceneId[], index: number, target: SceneId): { path: SceneId[]; index: number } {
+export function branchPath(path: EntryId[], index: number, target: EntryId): { path: EntryId[]; index: number } {
   const prefix = path.slice(0, index + 1);
   const visited = prefix.indexOf(target);
   if (visited !== -1) return { path, index: visited };
@@ -48,7 +47,7 @@ export const journeyUi = {
   },
 };
 
-export const scenes: Record<Language, Record<SceneId, SceneCopy>> = {
+export const scenes: Record<Language, Record<EntryId, SceneCopy>> = {
   en: {
     dfriend: { label: 'D-Friend', title: 'What if the score wasn’t the point?', question: 'What does it mean to learn?', paragraphs: [
       'D-Friend started with a frustration about how we judge learning. My first answer was a smarter scoring system. Then I noticed I was still turning a person into a score, just with more dimensions.',

@@ -1,30 +1,29 @@
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react';
-import { ArrowLeft, ArrowRight, ArrowUpRight, ArrowBendUpRight } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, ArrowBendUpRight, Books, GameController, Flask, Graph, PencilSimple, Scales, TreeStructure } from '@phosphor-icons/react';
 import { entries, projectLinks, ui, type EntryId, type Language } from './content';
-import { branchPath, connections, continuations, defaultPath, journeyUi, scenes, type SceneId } from './scenes';
-import SceneArt from './SceneArt';
+import { branchPath, connections, continuations, defaultPath, journeyUi, scenes } from './scenes';
 import './journey.css';
-import './scene-art.css';
 
-export type JourneyHandle = { enter: (id: SceneId) => void };
+export type JourneyHandle = { enter: (id: EntryId) => void };
 type Props = { language: Language; paused: boolean; onOpen: (id: EntryId) => void };
-const transitionStart = .76;
+const icons = { dfriend: Books, pilot: Flask, research: Graph, idea: TreeStructure, notebook: GameController, seventeen: PencilSimple, scores: Scales };
+const transitionStart = .62;
 const transitionSpan = 1 - transitionStart;
 const sceneScrollVh = 180;
 const ease = (value: number) => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
 
-const cameraPoses: Record<SceneId, { x: number; y: number; scale: number; rotate: number }> = {
-  dfriend: { x: 0, y: 56, scale: .84, rotate: -3 },
-  pilot: { x: 0, y: 35, scale: 1.08, rotate: 1 },
-  research: { x: 0, y: 45, scale: .95, rotate: -1 },
-  idea: { x: 44, y: -38, scale: .88, rotate: 5 },
-  notebook: { x: -24, y: 55, scale: .95, rotate: -3 },
-  seventeen: { x: 0, y: 48, scale: .96, rotate: -2 },
-  scores: { x: -32, y: 40, scale: .97, rotate: 3 },
-};
+function SceneObject({ id, language }: { id: EntryId; language: Language }) {
+  const Icon = icons[id];
+  return <div className={`scene-object-art art-${id}`} aria-hidden="true">
+    <div className="art-shadow" />
+    <div className="art-page art-page-back" />
+    <div className="art-page art-page-front"><Icon size={76} weight="light" /><span>{scenes[language][id].question}</span></div>
+    <span className="art-fastener" />
+  </div>;
+}
 
-function ConnectedPages({ id, index, next, language, onBranch }: { id: SceneId; index: number; next?: SceneId; language: Language; onBranch: (index: number, id: SceneId) => void }) {
+function ConnectedPages({ id, index, next, language, onBranch }: { id: EntryId; index: number; next?: EntryId; language: Language; onBranch: (index: number, id: EntryId) => void }) {
   const t = journeyUi[language];
   const targets = connections[id];
   return <aside className="connected-pages" aria-label={t.branches}>
@@ -44,9 +43,9 @@ function ConnectedPages({ id, index, next, language, onBranch }: { id: SceneId; 
   </aside>;
 }
 
-function Scene({ id, index, active, last, next, position, language, reduced, onOpen, onBranch }: {
-  id: SceneId; index: number; active: boolean; last: boolean; next?: SceneId; position: MotionValue<number>;
-  language: Language; reduced: boolean; onOpen: (id: EntryId) => void; onBranch: (index: number, id: SceneId) => void;
+function Scene({ id, index, active, last, next, position, width, language, reduced, onOpen, onBranch }: {
+  id: EntryId; index: number; active: boolean; last: boolean; next?: EntryId; position: MotionValue<number>; width: number;
+  language: Language; reduced: boolean; onOpen: (id: EntryId) => void; onBranch: (index: number, id: EntryId) => void;
 }) {
   const copy = scenes[language][id];
   const t = journeyUi[language];
@@ -65,26 +64,21 @@ function Scene({ id, index, active, last, next, position, language, reduced, onO
     return () => observer.disconnect();
   }, [language]);
 
-  const localProgress = useTransform(position, value => value - index);
-  const camera = useTransform(position, value => {
+  const x = useTransform(position, value => {
     const local = value - index;
-    if (local < 0) return -(1 - ease((local + transitionSpan) / transitionSpan));
+    if (local < 0) return (1 - ease((local + transitionSpan) / transitionSpan)) * (width + 80);
     if (last || local <= transitionStart) return 0;
-    return ease((local - transitionStart) / transitionSpan);
+    return -ease((local - transitionStart) / transitionSpan) * (width + 80);
   });
-  const pose = cameraPoses[id];
-  const x = useTransform(camera, value => value < 0 ? -value * pose.x : value * -pose.x * .4);
-  const y = useTransform(camera, value => value < 0 ? -value * pose.y : value * -24);
-  const angle = useTransform(camera, value => value < 0 ? -value * pose.rotate : value * -pose.rotate * .4);
-  const scale = useTransform(camera, value => 1 + (value < 0 ? -value * (pose.scale - 1) : value * .035));
-  // Let the outgoing text clear before revealing the next page's text.
-  const opacity = useTransform(camera, value => value < 0 ? ease((value + 1 - .48) / .52) : 1 - ease(value / .52));
-  const visibility = useTransform(camera, value => Math.abs(value) > .999 ? 'hidden' : 'visible');
+  const angle = useTransform(x, value => value / (width + 80) * 1.5);
   const bodyY = useTransform(position, value => {
     const reading = ease((value - index - .04) / .51);
     return 22 - reading * (readDistance + 22);
   });
-  return <motion.article className={`journey-scene scene-${id}`} data-scene={id} data-active={active} aria-hidden={!reduced && !active} inert={!reduced && !active} style={reduced ? undefined : { x, y, rotate: angle, scale, opacity, visibility, zIndex: index + 1, pointerEvents: active ? 'auto' : 'none', willChange: active ? 'transform, opacity' : 'auto' }}>
+  const artY = useTransform(position, value => Math.max(-30, Math.min(15, 15 - (value - index) * 55)));
+  const artRotate = useTransform(position, value => Math.max(-9, Math.min(7, 7 - (value - index) * 16)));
+
+  return <motion.article className={`journey-scene scene-${id}`} data-scene={id} data-active={active} aria-hidden={!reduced && !active} inert={!reduced && !active} style={reduced ? undefined : { x, rotate: angle, pointerEvents: active ? 'auto' : 'none', willChange: active ? 'transform' : 'auto' }}>
     <div className="scene-paper">
       <div className="scene-heading"><span className="scene-type">{entries[language][id].type}</span><span className="scene-status">{entries[language][id].status}</span></div>
       <h2 tabIndex={-1} className="scene-title">{copy.title}</h2>
@@ -94,7 +88,7 @@ function Scene({ id, index, active, last, next, position, language, reduced, onO
             {copy.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
           </motion.div>
         </div>
-        <div className="scene-art-wrap" aria-hidden="true"><SceneArt id={id} progress={localProgress} reduced={reduced} language={language} /></div>
+        <motion.div className="scene-art-wrap" style={reduced ? undefined : { y: artY, rotate: artRotate }}><SceneObject id={id} language={language} /></motion.div>
       </div>
       <div className="scene-paper-bottom"><button className="scene-full" data-detail={id} onClick={() => onOpen(id)}>{t.full}<ArrowUpRight size={18} /></button>{id === 'dfriend' ? <a className="scene-site" href={projectLinks.dfriend} target="_blank" rel="noopener noreferrer" aria-label={ui[language].visitDfriend}>dfriend.online<ArrowUpRight size={15} aria-hidden="true" /></a> : <span className="paper-signature">Eric Nguyen</span>}</div>
     </div>
@@ -104,10 +98,11 @@ function Scene({ id, index, active, last, next, position, language, reduced, onO
 
 export default forwardRef<JourneyHandle, Props>(function Journey({ language, paused, onOpen }, apiRef) {
   const root = useRef<HTMLElement>(null);
-  const [path, setPath] = useState<SceneId[]>([...defaultPath]);
+  const [path, setPath] = useState<EntryId[]>([...defaultPath]);
   const [active, setActive] = useState(0);
   const [pending, setPending] = useState<{ index: number; ticket: number } | null>(null);
   const focusDestination = useRef<number | null>(null);
+  const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
   const reduced = !!useReducedMotion();
   const { scrollYProgress } = useScroll({ target: root, offset: ['start start', 'end end'] });
   const rawPosition = useTransform(scrollYProgress, [0, 1], [0, path.length]);
@@ -129,6 +124,12 @@ export default forwardRef<JourneyHandle, Props>(function Journey({ language, pau
     if (!paused) targetPosition.set(value);
   });
 
+  useEffect(() => {
+    const update = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   useMotionValueEvent(position, 'change', value => {
     if (!reduced) {
       const next = Math.max(0, Math.min(path.length - 1, Math.floor(value)));
@@ -146,7 +147,7 @@ export default forwardRef<JourneyHandle, Props>(function Journey({ language, pau
     if (!reduced || !root.current) return;
     const observer = new IntersectionObserver(changes => {
       const visible = changes.find(change => change.isIntersecting);
-      if (visible) setActive(path.indexOf(visible.target.getAttribute('data-scene') as SceneId));
+      if (visible) setActive(path.indexOf(visible.target.getAttribute('data-scene') as EntryId));
     }, { rootMargin: '-20% 0px -55% 0px' });
     root.current.querySelectorAll('.journey-scene').forEach(scene => observer.observe(scene));
     return () => observer.disconnect();
@@ -175,7 +176,7 @@ export default forwardRef<JourneyHandle, Props>(function Journey({ language, pau
   }, [pending, path, reduced]);
 
   function jump(index: number) { setPending({ index, ticket: Date.now() }); }
-  function branch(index: number, target: SceneId) {
+  function branch(index: number, target: EntryId) {
     const result = branchPath(path, index, target);
     setPath(result.path);
     setPending({ index: result.index, ticket: Date.now() });
@@ -195,7 +196,7 @@ export default forwardRef<JourneyHandle, Props>(function Journey({ language, pau
         <div className="journey-navigation"><button aria-label={t.previous} disabled={active === 0} onClick={() => jump(Math.max(0, active - 1))}><ArrowLeft size={19} /></button>{active < path.length - 1 ? <button aria-label={t.next} onClick={() => jump(active + 1)}><ArrowRight size={19} /></button> : <a href="#contact" aria-label={t.finish}><ArrowBendUpRight size={19} /></a>}</div>
       </div>
       <div className="journey-stage">
-        {path.map((id, index) => <Scene key={id} id={id} index={index} active={index === active} last={index === path.length - 1} next={path[index + 1]} position={position} language={language} reduced={reduced} onOpen={onOpen} onBranch={branch} />)}
+        {path.map((id, index) => <Scene key={id} id={id} index={index} active={index === active} last={index === path.length - 1} next={path[index + 1]} position={position} width={viewport.width} language={language} reduced={reduced} onOpen={onOpen} onBranch={branch} />)}
       </div>
       <nav className="journey-path page-width" aria-label={t.path}>{path.map((id, index) => <button key={id} className={index === active ? 'path-active' : ''} aria-current={index === active ? 'step' : undefined} onClick={() => jump(index)}><span>{scenes[language][id].label}</span>{index < path.length - 1 && <ArrowRight size={12} aria-hidden="true" />}</button>)}</nav>
     </div>

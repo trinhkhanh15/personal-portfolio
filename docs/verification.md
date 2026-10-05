@@ -1,37 +1,63 @@
 # Local delivery verification
 
-Updated 2026-10-05, Asia/Ho_Chi_Minh. The portfolio runs locally at http://127.0.0.1:4173/. It has not been deployed to a public host.
+The branching Open Desk website is implemented and running locally. It has not been deployed publicly. Updated 2026-10-05, Asia/Ho_Chi_Minh.
 
-## Identity and motion redesign
+- Development: http://127.0.0.1:5173/
+- Production preview: http://127.0.0.1:4173/
+- Build: `npm run build` (TypeScript plus Vite), passed.
+- Browser checks: `npm run verify` passed against development and the branching production preview; production evidence is recorded in `artifacts/browser-verification.json`. Subsequent focused motion/desk checks are recorded below.
 
-The hero introduces Eric / Nguyễn Khánh Trình in one short paragraph. The repeated introduction scene and its miniature desk have been removed. On desktop the original right-hand desk stays in place while the large name changes into a short intro on the left; reverse scrolling restores the name. The journey proceeds directly through D-Friend → pilot → research → idea → notebook. Project objects on the desk still start directly at their subjects.
+## Verified behavior
 
-The repeated full-width horizontal slides have been replaced by small camera shifts, scale, and fades. The outgoing text clears before incoming text appears. Illustrations follow the subject: workspace objects reveal, a D-Friend folder opens, extra scope moves aside, three research conditions separate, and an unbuilt question is placed on the desk. Native scrolling drives Motion values through a damped spring; no wheel interception or per-frame React state drives the animations. Each scene retains 180vh of travel, with its final 24% reserved for a transition.
+- Scroll alone follows D-Friend → pilot → research → idea → notebook. Measured transforms confirm vertical text movement during reading and right-to-left paper movement during transitions. Reverse scrolling returns along the selected route.
+- Selecting the competition-at-17 branch inserts seventeen/scores and rejoins pilot. Other branches preserve the travelled prefix and replace the unread continuation. A visited target returns to its existing position without duplication.
+- Native keyboard activation works for branches and next/previous movement. Intentional scene navigation moves focus to the destination title.
+- Desk objects start a route from their own subject. A full-story action opens the detailed native dialog.
+- Popup scroll lock, native focus containment, Escape, and close actions work. Closing restores the originating detail button, chosen route, current scene, and document scroll position within one pixel.
+- All seven direct popup hashes and related-entry navigation work. Language can change inside the reader without losing its selection.
+- Language and theme preferences survive reload. First visits default to English, including browsers with a Vietnamese locale; manual Vietnamese selection remains saved.
+- All five default scenes have usable reading space and visible detail actions at 320, 390, 600, 768, 900, 1024, and 1440 pixels. No horizontal document overflow was detected. All four desk routes and detail popups were activated on mobile.
+- Reduced motion presents complete static vertical pages. Branch insertion, popup access, and accessibility checks pass in that mode.
+- Axe WCAG 2 / 2.1 AA checks pass for the active journey in light/dark, the Vietnamese reader, and the reduced-motion route. These are automated checks, not a complete accessibility certification.
+- Contact destinations match the supplied values. The browser run recorded no runtime errors or failed requests.
 
-## Checks
+## Visual inspection
 
-- `npm run build`: TypeScript and Vite passed on the final source.
-- `npm run verify`: passed against the production preview after the name-to-intro, retained-desk, semantic-motion, and reduced-motion contrast changes. Evidence: `artifacts/browser-verification.json`.
-- The full suite covers the five-scene scroll route, reverse scrolling, keyboard branches, preserving travelled history, returning without duplicates, next/previous navigation, and desk shortcuts.
-- All seven detailed popup hashes work. Opening a popup freezes ongoing illustration motion; closing restores the exact scroll position, route, scene, and originating button focus.
-- English remains the default on fresh visits, including a Vietnamese browser locale. Manual language and appearance choices persist; language switching in the reader retains the selected entry.
-- All five scenes retain reading space and visible action buttons at 320, 390, 600, 768, 900, 1024, and 1440 pixels, with no horizontal document overflow. Mobile checks use 844px height; other responsive checks use 800px height.
-- Axe WCAG 2 / 2.1 AA passes for the hero and D-Friend scene in both appearances, the desktop scroll intro, the Vietnamese research reader, and the branched static reduced-motion route. Automated checks do not amount to a complete accessibility certification.
-- Reduced motion presents complete static pages and illustration end states. The low-contrast labels on discarded sheets disappear as the sheets fade; complete explanations remain in the scene text.
-- Exact email and D-Friend link destinations were checked; no runtime errors were recorded.
+Inspected desktop scenes in English/dark and Vietnamese/light, a horizontal transition, the optional branch, detailed readers, the mobile Vietnamese/light scene, and mobile contact. The seven-width checks include an 800-pixel-high laptop viewport; mobile checks use 844 pixels of height.
 
-`node scripts/verify-motion.cjs` checks that outgoing and incoming text do not strongly overlap at two transition positions, then verifies active-motion popup freeze, unchanged scroll on resume, reverse wheel input, and branching at 1440px and 390px. Evidence: `artifacts/motion-verification.json`.
+## Lighthouse
 
-`node scripts/verify-desk.cjs` passed after the retained-desk change: gradual parallax, composed hover/keyboard lift, bilingual external product links, reader Axe checks, seven desk viewport widths, and static reduced-motion desk behavior. Evidence: `artifacts/desk-verification.json`.
+Measured the branching production preview before the subsequent motion pacing refinement, using local headless Chrome and Lighthouse's default mobile simulation. These scores were not remeasured after that refinement:
 
-## Visual evidence
+| Category | Score |
+| --- | --- |
+| Performance | 96 |
+| Accessibility | 100 |
+| Best practices | 100 |
+| SEO | 100 |
 
-Desktop screenshots for all five default scenes, mobile Vietnamese scenes in dark/light, and a camera transition were inspected. `npm run capture` refreshes the ignored `artifacts/` images. The current in-app browser was refreshed to the new production build and opened at the hero.
+LCP: 2.3 seconds. CLS: 0. Total blocking time: 20 ms. These are local lab measurements, not field data or measurements of a deployed domain. The newer optional agentic-browsing category scores 50 because the site does not provide llms.txt or an ARD schema; its accessibility-tree check passes.
 
-`node scripts/profile-scroll.cjs` records a controlled 180px wheel input through a D-Friend transition in `artifacts/motion-contextual.json`, sampling vertical travel, scale, opacity, and frame intervals. It is a local diagnostic, not a guarantee across devices or scroll gestures.
+Machine-readable evidence and screenshots are in the ignored `artifacts/` directory, including `browser-verification.json`, `lighthouse.json`, and the `journey-*.png` images. `npm run capture` refreshes the visual evidence.
 
-## Previous measurements
+The app queued the request to open the production preview. The local URL can also be opened directly.
 
-The earlier horizontal-slide implementation scored 96 performance and 100 accessibility/best-practices/SEO in local Lighthouse mobile simulation, with LCP 2.3s, CLS 0, and total blocking time 20ms. These scores were measured before the identity/motion redesign and have not been remeasured for the current version. Evidence remains in `artifacts/lighthouse.json`.
+## Motion pacing refinement
 
-The prior horizontal-motion traces (`motion-before.json`, `motion-after.json`) concern the superseded slide behavior and must not be used as measurements of the current transitions.
+The original scroll mapping moved a full-width paper through a transition occupying only 27% of a 105vh scene. A single 180px wheel event moved the article 1,072px in one animation frame in a local 1440 × 900 Chrome trace. This reproduced the abrupt motion reported by Eric.
+
+The scene now spans 180vh, with 38% allocated to a transition. A damped spring smooths transform updates and a smoothstep curve eases both ends of the transition. Tilt was reduced. Native wheel/touch document scrolling is preserved.
+
+The same 180px wheel event on the final build moved the paper through 35 frames, with a largest frame step of 69px and 613px total horizontal travel. The trace's 95th-percentile frame interval was 16.8ms. This is one controlled local input sample, not a guarantee across all devices or scroll gestures. Evidence: `artifacts/motion-before.json` and `artifacts/motion-after.json`; reproduce with `node scripts/profile-scroll.cjs`.
+
+The full browser suite passed with the new pacing and spring. The final popup-freeze guard was then checked separately at 1440px and 390px: opening during a moving transition freezes the animation, closing preserves document position, and reverse wheel/branch movement settle correctly. Build/TypeScript also passed on the final version. Evidence: `artifacts/motion-verification.json`; reproduce with `node scripts/verify-motion.cjs`. The currently open in-app preview was refreshed to the new build.
+
+## Desk motion and product link
+
+After the sticky desk was replaced by a one-viewport section, its original start/start–end/end scroll offsets left a zero-length range at 1440 × 900. A 120px wheel input consequently jumped the research paper directly from 0px/8° to −32px/13°.
+
+The revised range covers the full section height, followed by a damped spring. The same input now moves the paper approximately −1.14px/8.18°. Hover/focus lift is composed with current parallax rather than overriding it. The paper returns to its current scroll pose on pointer exit; the old hover brightness filter and mobile transform overrides were removed.
+
+`node scripts/verify-desk.cjs` passed on the production build: parallax, hover return, keyboard focus, bilingual product links, reader Axe checks, seven viewport widths, and static reduced motion. Evidence: `artifacts/desk-verification.json` and `artifacts/dfriend-link-mobile.png`. Build/TypeScript passed. The full journey suite was not rerun for this scoped desk/link change.
+
+Both the D-Friend scene and its popup link to https://www.dfriend.online/ in a separate tab with `noopener noreferrer`. The destination was opened successfully with the web tool, redirecting to `/vi`. The local app queued a request to open the refreshed desk preview.

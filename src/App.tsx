@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react';
 import { ArrowUpRight, ArrowRight, X, Sun, Moon, GithubLogo, InstagramLogo, LinkedinLogo, EnvelopeSimple, GameController, FilmSlate, Headphones, ArrowLeft, BookOpen } from '@phosphor-icons/react';
 import { allEntryIds, contact, entries, projectLinks, ui, type EntryId, type Language } from './content';
 import Journey, { type JourneyHandle } from './Journey';
-import { journeyUi, type SceneId } from './scenes';
+import { journeyUi } from './scenes';
 
 type Theme = 'dark' | 'light';
 
@@ -54,42 +54,13 @@ function DeskObject({ className, children, reduced, x, y, rotate, tilt, onClick 
     onBlur={() => { focused.current = false; update(); }} onClick={onClick}>{children}</motion.button>;
 }
 
-function Desk({ language, onExplore }: { language: Language; onExplore: (id: SceneId) => void }) {
+function Desk({ language, onExplore }: { language: Language; onExplore: (id: EntryId) => void }) {
   const t = ui[language];
   const section = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const [desktop, setDesktop] = useState(() => window.matchMedia('(min-width: 901px)').matches);
-  const [introHidden, setIntroHidden] = useState(false);
-  const [summaryHidden, setSummaryHidden] = useState(true);
-  useEffect(() => {
-    const media = window.matchMedia('(min-width: 901px)');
-    const update = () => { setDesktop(media.matches); setIntroHidden(false); setSummaryHidden(true); };
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
   // Cover the desk's full height, even when it is exactly one viewport tall.
   const { scrollYProgress } = useScroll({ target: section, offset: ['start start', 'end start'] });
   const progress = useSpring(scrollYProgress, { stiffness: 240, damping: 30, mass: .65 });
-  const introOpacity = useTransform(progress, value => {
-    if (reduced || !desktop) return 1;
-    const t = Math.max(0, Math.min(1, (value - .05) / .09));
-    return 1 - t * t * (3 - 2 * t);
-  });
-  const summaryOpacity = useTransform(progress, value => {
-    if (reduced || !desktop) return 0;
-    const t = Math.max(0, Math.min(1, (value - .14) / .09));
-    return t * t * (3 - 2 * t);
-  });
-  const summaryY = useTransform(summaryOpacity, value => (1 - value) * 20);
-  useMotionValueEvent(summaryOpacity, 'change', value => setSummaryHidden(previous => {
-    const hidden = value < .01;
-    return previous === hidden ? previous : hidden;
-  }));
-  const introY = useTransform(introOpacity, value => (1 - value) * -35);
-  useMotionValueEvent(introOpacity, 'change', value => setIntroHidden(previous => {
-    const hidden = value < .01;
-    return previous === hidden ? previous : hidden;
-  }));
   const folderX = useTransform(progress, [0, 1], [0, -25]);
   const folderRotate = useTransform(progress, [0, 1], [-10, -16]);
   const paperY = useTransform(progress, [0, 1], [0, -32]);
@@ -100,21 +71,13 @@ function Desk({ language, onExplore }: { language: Language; onExplore: (id: Sce
   return <section id="desk" className="desk-section" ref={section}>
     <div className="desk-sticky page-width">
       <div className="hero-grid">
-        <div className="hero-copy-stack">
-        <motion.div className="hero-copy" style={{ opacity: introOpacity, y: introY }} inert={introHidden} aria-hidden={introHidden}>
+        <motion.div className="hero-copy" initial={reduced ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <p className="intro-role"><span className="tiny-mark" aria-hidden="true">↳</span> {t.role}</p>
           <h1>Eric<br />Nguyen<span className="name-period">.</span></h1>
           <p className="vietnamese-name">{t.name}</p>
-          <p className="hero-intro">{!desktop || reduced ? t.scrollIntro : t.intro}</p>
+          <p className="hero-intro">{t.intro}</p>
           <button className="text-link hero-link" onClick={() => onExplore('dfriend')}>{t.heroLink}<ArrowRight size={19} /></button>
         </motion.div>
-        <motion.div className="hero-scroll-intro" style={{ opacity: summaryOpacity, y: summaryY }} inert={summaryHidden} aria-hidden={summaryHidden}>
-          <p className="scroll-intro-name">Eric Nguyen / Nguyễn Khánh Trình</p>
-          <h2>{t.scrollIntroTitle}</h2>
-          <p className="scroll-intro-body">{t.scrollIntro}</p>
-          <button className="text-link hero-link" onClick={() => onExplore('dfriend')}>{t.heroLink}<ArrowRight size={19} /></button>
-        </motion.div>
-        </div>
 
         <div className="desk-surface" aria-label={t.deskTitle}>
           <div className="desk-light" aria-hidden="true" />
@@ -165,10 +128,10 @@ function Desk({ language, onExplore }: { language: Language; onExplore: (id: Sce
           <span className="desk-caption">{t.deskHint}</span>
         </div>
       </div>
-      <motion.div className="desk-bottom" style={{ opacity: introOpacity }} aria-hidden={introHidden}>
+      <div className="desk-bottom">
         <span>{t.deskTitle}</span>
         <p>{t.deskBody}</p>
-      </motion.div>
+      </div>
     </div>
   </section>;
 }

@@ -1,6 +1,6 @@
 # Eric Nguyen: Open Desk
 
-Status: Open Desk retained; hero name-to-intro transition with content-driven journey motion implemented locally.
+Status: Open Desk concept retained; branching scroll journey implemented locally.
 Updated: 2026-10-05, Asia/Ho_Chi_Minh.
 
 ## Purpose
@@ -11,7 +11,7 @@ Public identity: Eric Nguyen / Nguyễn Khánh Trình.
 
 ## Selected concept: a desk left open
 
-The site is a personal workspace with things left open, not a chronological biography. A visitor can simply scroll through short scenes or select a connected thought to change the route. The hero introduces Eric once, in a short paragraph. As desktop visitors scroll, the large name on the left changes into a short personal introduction while the original desk stays on the right; the journey then starts at D-Friend. Each scene illustrates its own decision through motion: desk objects reveal, a folder opens, excess scope moves aside, or research conditions separate. Small camera shifts, scaling, and opacity connect scenes; concise text moves upward during reading. Detailed stories remain in separate reading popups.
+The site is a personal workspace with things left open, not a chronological biography. A visitor can simply scroll through short scenes or select a connected thought to change the route. Articles arrive from the right and leave to the left; within each scene, the paper stays still while its concise text moves upward as the visitor scrolls down. Detailed stories remain in separate reading popups.
 
 The metaphor is a designed digital desk, not a claimed photograph of Eric's room. It does not require an operating-system simulation, a loader, a game, or a tutorial.
 
@@ -28,7 +28,7 @@ The metaphor is a designed digital desk, not a claimed photograph of Eric's room
 
 ### Introduction
 
-Eric's name and a short, natural introduction. The first screen establishes that he builds products, experiments with agents, and learns through trying. A view of the open desk gives immediate access to the work. On desktop, the desk stays in place through a short scroll phase as the large name changes into a concise personal introduction. Mobile and reduced motion keep a regular vertical flow.
+Eric's name and a short, natural introduction. The first screen establishes that he builds products, experiments with agents, and learns through trying. A view of the open desk gives immediate access to the work.
 
 ### On the desk
 
@@ -39,7 +39,7 @@ Four objects are primary entry points:
 3. Agent-improve-agent note: an early idea, not a built system or validated general capability.
 4. Personal notebook: games, films, working preferences, stack, and learning habits.
 
-Each object has a concise preview and keyboard-accessible action that starts the scroll journey at that subject. Every story scene has a separate full-story button for the existing reading dialog. Direct hashes can open all seven detailed entries. The four desk objects remain the personal identity and entry points; the journey carries the main exploration.
+Each object has a concise preview and keyboard-accessible action that starts the scroll journey at that subject. Every scene has a separate full-story button for the existing reading dialog. Direct hashes can open all seven detailed entries. The four desk objects remain the personal identity and entry points; the journey carries the main exploration.
 
 The D-Friend scene and its detailed reader provide an external link to https://www.dfriend.online/. The product site opens in a separate tab; selecting the desk folder continues to explore the portfolio.
 
@@ -55,11 +55,11 @@ These are selectively honest stories. Omit private family details, health measur
 
 ### Scroll route and branches
 
-Default route: hero / retained desk → D-Friend → pilot → financial-agent research → agent-improve-agent idea → personal notebook → contact.
+Default route: D-Friend → pilot → financial-agent research → agent-improve-agent idea → personal notebook → contact.
 
 An optional branch from D-Friend visits the competition at 17 and rethinking scores, then rejoins the pilot scene. Other related-page links let visitors redirect the unread part of their route. Choosing a previously visited node returns to that node without appending it again. Reverse scrolling follows the actual chosen route. Starting from a desk object creates a fresh route beginning at that object.
 
-Each scene contains a title, two concise paragraphs, an illustration tied to the subject, related-page choices, and a full-story action. Personal identity appears in the hero, without a second introduction scene or duplicate miniature desk. All seven detailed entries remain available. No click is required to continue along the default route. Next/previous buttons and a visible route strip support keyboard use and direct movement.
+Each scene contains a title, two concise paragraphs (roughly 60–100 English words), a small illustrative object, a full-story button, and related-page choices. No click is required to continue along the default route. Next/previous buttons and a visible route strip support keyboard use and direct movement.
 
 ### Off the desk / connection
 
@@ -84,8 +84,8 @@ Vietnamese and English have full content parity. English should be idiomatic rat
 
 ## Interaction and accessibility
 
-- Native document scrolling drives a sticky scene frame. Reading and camera transitions occupy separate phases; no wheel interception or nested scroll area is used for the short scenes.
-- Each scene has 180 viewport heights of document travel. The last 24% of that distance handles its transition, with smooth acceleration/deceleration. A damped spring follows scroll progress for visual transforms; the document itself remains native. Opening a popup freezes the spring, including when it is still settling.
+- Native document scrolling drives a sticky scene frame. Reading and horizontal transition occupy separate phases; no wheel interception or nested scroll area is used for the short scenes.
+- Each scene has 180 viewport heights of document travel. The last 38% of that distance handles its transition, with smooth acceleration/deceleration. A damped spring follows scroll progress for visual transforms; the document itself remains native. Opening a popup freezes the spring, including when it is still settling.
 - Hover/focus offers feedback; all meaningful actions also work on touch and keyboard.
 - Desk parallax uses the full section height as its scroll range. Hover/keyboard lift is added to the current scroll transform through one composed spring animation, avoiding competing transform owners. Reduced motion retains the static desk arrangement.
 - Dialogs use native focus containment, Escape, close buttons, and focus restoration. Background scroll is locked while reading. Closing resumes the same scene, chosen path, and document position.
@@ -101,7 +101,7 @@ React + TypeScript + Vite, native CSS tokens, Motion for scroll and interaction,
 
 1. Production build and TypeScript checks pass.
 2. Desktop and mobile layouts are inspected in a real browser.
-3. Scroll-only default navigation, optional branches, reverse scrolling, and keyboard movement work. All seven story scenes open their detailed entries, close without losing position, and can be reached directly through a popup hash.
+3. Scroll-only default navigation, optional branches, reverse scrolling, and keyboard movement work. Every scene opens its detailed entry, closes without losing position, and can be reached directly through a popup hash.
 4. Full language switching and saved preferences work.
 5. Keyboard focus, Escape, reduced-motion, and light/dark appearance work.
 6. Public contact links match the provided values.
