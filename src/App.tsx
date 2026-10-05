@@ -3,7 +3,7 @@ import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTran
 import { ArrowUpRight, ArrowRight, X, Sun, Moon, GithubLogo, InstagramLogo, LinkedinLogo, EnvelopeSimple, GameController, FilmSlate, Headphones, ArrowLeft, BookOpen } from '@phosphor-icons/react';
 import { allEntryIds, contact, entries, projectLinks, ui, type EntryId, type Language } from './content';
 import Journey, { type JourneyHandle } from './Journey';
-import { journeyUi } from './scenes';
+import { journeyUi, type SceneId } from './scenes';
 
 type Theme = 'dark' | 'light';
 
@@ -54,7 +54,7 @@ function DeskObject({ className, children, reduced, x, y, rotate, tilt, onClick 
     onBlur={() => { focused.current = false; update(); }} onClick={onClick}>{children}</motion.button>;
 }
 
-function Desk({ language, onExplore }: { language: Language; onExplore: (id: EntryId) => void }) {
+function Desk({ language, onExplore }: { language: Language; onExplore: (id: SceneId) => void }) {
   const t = ui[language];
   const section = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
@@ -76,7 +76,7 @@ function Desk({ language, onExplore }: { language: Language; onExplore: (id: Ent
           <h1>Eric<br />Nguyen<span className="name-period">.</span></h1>
           <p className="vietnamese-name">{t.name}</p>
           <p className="hero-intro">{t.intro}</p>
-          <button className="text-link hero-link" onClick={() => onExplore('dfriend')}>{t.heroLink}<ArrowRight size={19} /></button>
+          <button className="text-link hero-link" onClick={() => onExplore('approach')}>{t.heroLink}<ArrowRight size={19} /></button>
         </motion.div>
 
         <div className="desk-surface" aria-label={t.deskTitle}>

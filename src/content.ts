@@ -23,7 +23,7 @@ export const projectLinks = { dfriend: 'https://www.dfriend.online/' };
 export const ui = {
   en: {
     skip: 'Skip to content', desk: 'The desk', notes: 'Some notes', contact: 'Say hello',
-    intro: "I build products, mess with agents, and learn by trying things. This is a little of what’s on my desk.",
+    intro: 'I’m a computer science student in Vietnam. I build products, experiment with agents, and learn by testing ideas.',
     name: 'Nguyễn Khánh Trình', role: 'A builder, figuring things out.',
     heroLink: 'Take a look around', deskTitle: 'A few things left open.',
     deskBody: 'Some are being built. Some are being tested. One is still just a thought.',
@@ -45,7 +45,7 @@ export const ui = {
   },
   vi: {
     skip: 'Đến nội dung', desk: 'Bàn làm việc', notes: 'Vài ghi chú', contact: 'Bắt chuyện',
-    intro: 'Mình xây sản phẩm, thử nghiệm với agent, và học bằng cách làm. Đây là vài thứ đang mở trên bàn mình.',
+    intro: 'Mình học Khoa học máy tính ở Việt Nam. Mình xây sản phẩm, thử nghiệm với agent và học bằng cách kiểm chứng ý tưởng.',
     name: 'Nguyễn Khánh Trình', role: 'Thích xây, vẫn đang tìm đường.',
     heroLink: 'Ghé xem một chút', deskTitle: 'Vài thứ vẫn đang mở.',
     deskBody: 'Có thứ đang xây. Có thứ đang kiểm chứng. Có thứ mới chỉ là một suy nghĩ.',

@@ -2,7 +2,7 @@
 
 A bilingual personal portfolio for Eric Nguyen / Nguyễn Khánh Trình. A calm, tactile desk leads into a branching scroll journey through projects, research, unfinished ideas, and personal notes.
 
-Scroll to read short scenes, with articles passing from right to left. Follow the default route or choose a connected thought to redirect it. Full stories open in reading popups; closing them resumes the same position. Reduced motion presents static vertical pages.
+Scroll first meets Eric and how he works, then explores the work. Folders open, scope moves aside, and research paths separate as each scene unfolds. Follow the default route or choose a connected thought to redirect it. Full stories open in reading popups; closing them resumes the same position. Reduced motion presents static vertical pages.
 
 ## Run locally
 
@@ -29,6 +29,7 @@ The production output is `dist/`. It can be served by a static host. No account,
 - `src/scenes.ts`: concise scene copy, graph connections, and route rules.
 - `src/Journey.tsx`: scroll scenes, branch selection, keyboard movement, and reduced-motion flow.
 - `src/journey.css`: scene composition and responsive layouts.
+- `src/SceneArt.tsx` and `src/scene-art.css`: bilingual illustrations and scene-specific scroll motion.
 - `src/tokens.css`: appearance tokens.
 - `src/styles.css`: tactile objects and responsive composition.
 - `src/App.tsx`: desk entry points, native reading dialogs, language/appearance settings, and hash navigation.
