@@ -1,5 +1,10 @@
-.desk-section { min-height: 100dvh; }
-.desk-sticky { position: relative; top: auto; min-height: calc(100dvh - 88px); }
+/* Keep the original desk in place while its introduction clears. */
+.desk-section { min-height: 150svh; }
+.desk-sticky { position: sticky; top: 88px; min-height: calc(100svh - 88px); }
+@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+  .desk-section { min-height: 0; }
+  .desk-sticky { position: relative; top: auto; }
+}
 .journey { position: relative; }
 .journey-frame { position: sticky; top: 88px; height: calc(100svh - 88px); overflow: clip; display: flex; flex-direction: column; background: var(--surface); }
 .journey-toolbar { width: 100%; display: flex; justify-content: space-between; align-items: center; min-height: 60px; flex-shrink: 0; gap: 24px; }

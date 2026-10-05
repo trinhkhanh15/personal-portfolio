@@ -12,7 +12,7 @@
 
 - Keep Open Desk identity and all seven detailed bilingual stories.
 - Replace the notes tabs with short scroll scenes. Keep vertical reading; replace repeated horizontal slides with small camera transitions and subject-specific illustration motion.
-- Introduce Eric and his approach before D-Friend on the default route. Keep project shortcuts on the desk.
+- Introduce Eric in a short hero paragraph. Keep the original right-hand desk during the desktop opening scroll, then enter D-Friend directly; remove the repeated introduction scene. Keep project shortcuts on the desk.
 - Provide a default route plus connected-page branches that preserve the travelled prefix and replace the unread tail. Returning to a visited page creates no duplicate node.
 - Desk objects start at their scene; detail buttons open existing popups. Closing restores route, position, and focus.
 - Keep native document scrolling. Use Motion values for transforms, discrete state for route/current scene, and static vertical pages for reduced motion.

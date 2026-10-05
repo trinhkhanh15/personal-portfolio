@@ -1,10 +1,9 @@
 import type { EntryId, Language } from './content';
 
 export type SceneCopy = { title: string; paragraphs: [string, string]; label: string; question: string };
-export type SceneId = 'approach' | EntryId;
-export const defaultPath: SceneId[] = ['approach', 'dfriend', 'pilot', 'research', 'idea', 'notebook'];
+export type SceneId = EntryId;
+export const defaultPath: SceneId[] = ['dfriend', 'pilot', 'research', 'idea', 'notebook'];
 export const continuations: Record<SceneId, SceneId[]> = {
-  approach: defaultPath,
   dfriend: ['dfriend', 'pilot', 'research', 'idea', 'notebook'],
   seventeen: ['seventeen', 'scores', 'pilot', 'research', 'idea', 'notebook'],
   scores: ['scores', 'pilot', 'research', 'idea', 'notebook'],
@@ -14,7 +13,6 @@ export const continuations: Record<SceneId, SceneId[]> = {
   notebook: ['notebook'],
 };
 export const connections: Record<SceneId, SceneId[]> = {
-  approach: ['dfriend', 'research', 'seventeen'],
   dfriend: ['seventeen', 'scores', 'pilot'],
   seventeen: ['scores', 'dfriend'],
   scores: ['pilot', 'dfriend'],
@@ -40,7 +38,6 @@ export const journeyUi = {
     return: 'Back to the desk', forward: 'Continue to', finish: 'Say hello', explore: 'Explore',
     origin: 'Why it started', nextLabel: 'Where it led', research: 'A question to test',
     path: 'Your path through the desk', branch: 'Take this thread', resume: 'Continue exploring',
-    personal: 'Eric Nguyen / Nguyễn Khánh Trình', status: 'How I work', work: 'See what I’m building',
   },
   vi: {
     title: 'Theo một dòng suy nghĩ.', subtitle: 'Cứ đi tiếp, hoặc rẽ sang một câu chuyện khác.',
@@ -48,16 +45,11 @@ export const journeyUi = {
     return: 'Về bàn làm việc', forward: 'Đi tiếp tới', finish: 'Bắt chuyện', explore: 'Khám phá',
     origin: 'Vì sao nó bắt đầu', nextLabel: 'Nó dẫn tới đâu', research: 'Một câu hỏi để test',
     path: 'Đường bạn vừa đi', branch: 'Rẽ sang câu chuyện này', resume: 'Khám phá tiếp',
-    personal: 'Eric Nguyen / Nguyễn Khánh Trình', status: 'Cách mình làm việc', work: 'Xem những thứ mình đang xây',
   },
 };
 
 export const scenes: Record<Language, Record<SceneId, SceneCopy>> = {
   en: {
-    approach: { label: 'How I work', title: 'I build to find out.', question: 'What if I’m wrong?', paragraphs: [
-      'I’m Eric — Nguyễn Khánh Trình, a computer science student in Vietnam. I usually pick a hypothesis, build something to test it, and change my mind when the evidence says I should.',
-      'D-Friend, agent research, and the ideas I haven’t built yet are all part of that process. I care about them, but I’m betting more on myself than on one project: what I’ll learn, and who I’ll build with next.',
-    ] },
     dfriend: { label: 'D-Friend', title: 'What if the score wasn’t the point?', question: 'What does it mean to learn?', paragraphs: [
       'D-Friend started with a frustration about how we judge learning. My first answer was a smarter scoring system. Then I noticed I was still turning a person into a score, just with more dimensions.',
       'So I changed the starting point: a learning environment where trying, finishing, and revising matter. It’s now in pilot, focused on a teacher copilot. The idea is still being tested, and so am I.',
@@ -88,10 +80,6 @@ export const scenes: Record<Language, Record<SceneId, SceneCopy>> = {
     ] },
   },
   vi: {
-    approach: { label: 'Cách mình làm việc', title: 'Xây để biết mình có sai không.', question: 'Nếu mình đang sai thì sao?', paragraphs: [
-      'Mình là Trình, thường dùng tên Eric, đang học Khoa học máy tính ở Việt Nam. Mình thường đặt cược vào một giả thuyết, tự xây thứ gì đó để thử, rồi sửa lại khi thực tế bảo mình sai.',
-      'D-Friend, nghiên cứu về agent và những ý tưởng còn dở đều nằm trong quá trình đó. Mình quan tâm chúng, nhưng đặt cược vào bản thân nhiều hơn vào một dự án: những thứ mình sẽ học, và những người mình sẽ cùng xây tiếp.',
-    ] },
     dfriend: { label: 'D-Friend', title: 'Nếu điểm số không phải đích đến?', question: 'Thế nào là thực sự học?', paragraphs: [
       'D-Friend bắt đầu từ sự khó chịu với cách chúng ta đánh giá việc học. Câu trả lời đầu tiên của mình là một hệ thống chấm điểm thông minh hơn. Rồi mình nhận ra mình vẫn thu gọn con người vào điểm số, chỉ là nhiều chiều hơn.',
       'Thế là mình đổi điểm bắt đầu: một môi trường học coi trọng việc thử, hoàn thành và sửa. Hiện tại D-Friend đang pilot với teacher copilot. Ý tưởng vẫn đang được kiểm chứng, và mình cũng đang học ngay trong quá trình đó.',

@@ -18,18 +18,21 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
  const page=await context.newPage();const errors=[],results=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base,{waitUntil:'networkidle'});
- const defaultPath='approach,dfriend,pilot,research,idea,notebook';
+ const defaultPath='dfriend,pilot,research,idea,notebook';
  assert.equal(await page.locator('#journey').getAttribute('data-path'),defaultPath);
- await at(page,'approach');
- assert.equal(await page.locator('#journey').getAttribute('data-current'),'approach');
- assert.match(await page.locator('[data-scene="approach"] .scene-reading-copy').innerText(),/Eric.*Nguyễn Khánh Trình.*computer science.*Vietnam/);
- assert.match(await page.locator('[data-scene="approach"] .scene-reading-copy').innerText(),/betting more on myself/);
- assert.equal(await page.locator('[data-scene="dfriend"]').getAttribute('aria-hidden'),'true');
- results.push('First scroll identifies Eric/Trinh and how he works before D-Friend');
+ assert.equal(await page.locator('[data-scene="approach"]').count(),0);
+ assert.match(await page.locator('.hero-intro').innerText(),/Computer science.*Vietnam.*test ideas/);
+ const start=await page.locator('.desk-surface').boundingBox();
+ await page.evaluate(()=>scrollTo({top:440,behavior:'instant'}));await page.waitForTimeout(750);
+ const held=await page.locator('.desk-surface').boundingBox();
+ assert.ok(Math.abs(held.y-start.y)<2,'Original desk stays in place as introduction clears');
+ assert.ok((await pose(page,'.hero-copy')).opacity<.01,'Hero introduction clears');
+ assert.equal(await page.locator('.hero-copy').getAttribute('inert'),'');
+ await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(750);
+ assert.ok((await pose(page,'.hero-copy')).opacity>.99,'Reverse scroll restores introduction');
+ assert.equal(await page.locator('.hero-copy').getAttribute('inert'),null);
+ results.push('Short personal introduction appears once; original desk holds through scroll; reverse restores intro');
 
- await at(page,'approach',.03);const hidden=await pose(page,'[data-action="reveal-question"]');
- await at(page,'approach',.56);const visible=await pose(page,'[data-action="reveal-question"]');
- assert.ok(hidden.opacity<.1&&visible.opacity>.95);
  await at(page,'dfriend',.05);const closed=await pose(page,'.study-cover');
  await at(page,'dfriend',.55);const opened=await pose(page,'.study-cover');
  assert.ok(closed.a>.95&&opened.a<-.25,'Folder opens to reveal learning environment');
@@ -41,7 +44,7 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
  await at(page,'research',.55);const separated=await pose(page,'.condition-0');
  assert.ok(Math.abs(separated.x-together.x)>80);
  assert.ok((await pose(page,'.condition-2')).x>80);
- results.push('Workspace objects reveal, folder opens, pilot scope is trimmed, research paths separate');
+ results.push('Folder opens, pilot scope is trimmed, research paths separate');
 
  for(const id of defaultPath.split(',')){await at(page,id);assert.equal(await page.locator('#journey').getAttribute('data-current'),id);}
  await at(page,'research',.87);
@@ -65,7 +68,7 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
 
  await at(page,'dfriend');await page.locator('[data-scene="dfriend"] [data-branch="seventeen"]').focus();await page.keyboard.press('Enter');
  await current(page,'seventeen');
- const branch='approach,dfriend,seventeen,scores,pilot,research,idea,notebook';
+ const branch='dfriend,seventeen,scores,pilot,research,idea,notebook';
  assert.equal(await page.locator('#journey').getAttribute('data-path'),branch);
  assert.equal(await page.locator('[data-scene="seventeen"] .scene-title').evaluate(el=>document.activeElement===el),true);
  await at(page,'scores');await at(page,'pilot');
@@ -73,7 +76,7 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
  assert.equal(await page.locator('#journey').getAttribute('data-path'),branch);
  await page.locator('.journey-navigation button').last().click();await current(page,'seventeen');
  await page.locator('.journey-navigation button').first().click();await current(page,'dfriend');
- results.push('Keyboard branching preserves identity prefix, rejoins pilot, returns without loops, next/previous work');
+ results.push('Keyboard branching preserves travelled prefix, rejoins pilot, returns without loops, next/previous work');
 
  for(const id of ['dfriend','research','idea','notebook','seventeen','scores','pilot']){
   await page.goto(`${base}/#open/${id}`,{waitUntil:'networkidle'});
@@ -92,7 +95,7 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
  assert.equal(await page.locator('html').getAttribute('lang'),'vi');assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
  results.push('Seven direct hashes, desk shortcuts, bilingual detailed readers and saved preferences');
 
- for(const theme of ['light','dark']){await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);await at(page,'approach');await audit(page,`Identity ${theme}`);await at(page,'dfriend');await audit(page,`D-Friend ${theme}`);}
+ for(const theme of ['light','dark']){await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(750);await audit(page,`Hero ${theme}`);await at(page,'dfriend');await audit(page,`D-Friend ${theme}`);}
  for(const width of [320,390,600,768,900,1024,1440]){
   await page.setViewportSize({width,height:width<600?844:800});await page.goto(base,{waitUntil:'networkidle'});
   for(const id of defaultPath.split(',')){
@@ -101,13 +104,13 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
    assert.ok(!layout.overflow,`Overflow ${width}/${id}`);assert.ok(layout.reading>65,`Reading space ${width}/${id}: ${layout.reading}`);assert.ok(layout.bottom<=layout.height,`Action clipped ${width}/${id}`);
   }
  }
- results.push('Both themes pass Axe; six scenes fit seven widths with visible reading/action areas');
+ results.push('Both themes pass Axe; five scenes fit seven widths with visible reading/action areas');
 
  const reducedContext=await browser.newContext({reducedMotion:'reduce',viewport:{width:1440,height:900}});
  const reduced=await reducedContext.newPage();await reduced.goto(base,{waitUntil:'networkidle'});
  assert.equal(await reduced.locator('.journey-frame').evaluate(el=>getComputedStyle(el).position),'relative');
- assert.equal(await reduced.locator('.journey-scene[aria-hidden="false"]').count(),6);
- await reduced.locator('[data-scene="approach"] [data-branch="seventeen"]').click();await current(reduced,'seventeen');
+ assert.equal(await reduced.locator('.journey-scene[aria-hidden="false"]').count(),5);
+ await reduced.locator('[data-scene="dfriend"] [data-branch="seventeen"]').click();await current(reduced,'seventeen');
  assert.equal(await reduced.locator('.journey-scene[aria-hidden="false"]').count(),7);
  await audit(reduced,'Reduced motion');results.push('Reduced motion static content, semantic end states, branches and accessibility');
  const vi=await(await browser.newContext({locale:'vi-VN'})).newPage();await vi.goto(base,{waitUntil:'networkidle'});assert.equal(await vi.locator('html').getAttribute('lang'),'en');

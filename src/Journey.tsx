@@ -15,7 +15,6 @@ const sceneScrollVh = 180;
 const ease = (value: number) => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
 
 const cameraPoses: Record<SceneId, { x: number; y: number; scale: number; rotate: number }> = {
-  approach: { x: 0, y: 25, scale: .98, rotate: 0 },
   dfriend: { x: 0, y: 56, scale: .84, rotate: -3 },
   pilot: { x: 0, y: 35, scale: 1.08, rotate: 1 },
   research: { x: 0, y: 45, scale: .95, rotate: -1 },
@@ -36,7 +35,7 @@ function ConnectedPages({ id, index, next, language, onBranch }: { id: SceneId; 
       </svg>
       <div className="branch-pages">
         {targets.map((target, targetIndex) => <button key={target} className={`branch-page ${next === target ? 'branch-next' : ''}`} data-branch={target} style={{ rotate: `${[3, -3, 2][targetIndex]}deg` }} onClick={() => onBranch(index, target)}>
-          <span className="branch-type">{next === target ? t.forward : target === 'approach' ? t.status : entries[language][target].type}</span>
+          <span className="branch-type">{next === target ? t.forward : entries[language][target].type}</span>
           <span className="branch-title">{scenes[language][target].label}</span>
           <ArrowUpRight size={20} aria-hidden="true" />
         </button>)}
@@ -87,7 +86,7 @@ function Scene({ id, index, active, last, next, position, language, reduced, onO
   });
   return <motion.article className={`journey-scene scene-${id}`} data-scene={id} data-active={active} aria-hidden={!reduced && !active} inert={!reduced && !active} style={reduced ? undefined : { x, y, rotate: angle, scale, opacity, visibility, zIndex: index + 1, pointerEvents: active ? 'auto' : 'none', willChange: active ? 'transform, opacity' : 'auto' }}>
     <div className="scene-paper">
-      <div className="scene-heading"><span className="scene-type">{id === 'approach' ? t.personal : entries[language][id].type}</span><span className="scene-status">{id === 'approach' ? t.status : entries[language][id].status}</span></div>
+      <div className="scene-heading"><span className="scene-type">{entries[language][id].type}</span><span className="scene-status">{entries[language][id].status}</span></div>
       <h2 tabIndex={-1} className="scene-title">{copy.title}</h2>
       <div className="scene-main">
         <div className="scene-reading-window" ref={readingWindow}>
@@ -97,7 +96,7 @@ function Scene({ id, index, active, last, next, position, language, reduced, onO
         </div>
         <div className="scene-art-wrap" aria-hidden="true"><SceneArt id={id} progress={localProgress} reduced={reduced} language={language} /></div>
       </div>
-      <div className="scene-paper-bottom">{id === 'approach' ? <button className="scene-full" data-start-work onClick={() => onBranch(index, 'dfriend')}>{t.work}<ArrowRight size={18} /></button> : <button className="scene-full" data-detail={id} onClick={() => onOpen(id)}>{t.full}<ArrowUpRight size={18} /></button>}{id === 'dfriend' ? <a className="scene-site" href={projectLinks.dfriend} target="_blank" rel="noopener noreferrer" aria-label={ui[language].visitDfriend}>dfriend.online<ArrowUpRight size={15} aria-hidden="true" /></a> : <span className="paper-signature">Eric Nguyen</span>}</div>
+      <div className="scene-paper-bottom"><button className="scene-full" data-detail={id} onClick={() => onOpen(id)}>{t.full}<ArrowUpRight size={18} /></button>{id === 'dfriend' ? <a className="scene-site" href={projectLinks.dfriend} target="_blank" rel="noopener noreferrer" aria-label={ui[language].visitDfriend}>dfriend.online<ArrowUpRight size={15} aria-hidden="true" /></a> : <span className="paper-signature">Eric Nguyen</span>}</div>
     </div>
     <ConnectedPages id={id} index={index} next={next} language={language} onBranch={onBranch} />
   </motion.article>;

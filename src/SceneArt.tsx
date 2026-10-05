@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { motion, useTransform, type MotionValue } from 'motion/react';
-import { BookOpen, Flask, Graph, TreeStructure, GameController, PencilSimple, ArrowRight } from '@phosphor-icons/react';
+import { BookOpen, Flask, Graph, TreeStructure, GameController, PencilSimple } from '@phosphor-icons/react';
 import type { Language } from './content';
 import type { SceneId } from './scenes';
 
@@ -35,12 +35,6 @@ function OpeningFolder({ progress, reduced, language }: { progress: MotionValue<
 export default function SceneArt({ id, progress, reduced, language }: { id: SceneId; progress: MotionValue<number>; reduced: boolean; language: Language }) {
   const t = copy[language];
   const discardedLabel = useTransform(progress, value => value > .28 ? 'hidden' : 'visible');
-  if (id === 'approach') return <div className="scene-illustration approach-table" data-illustration="personal-workspace">
-    <div className="approach-center"><span>Eric / Trình</span><p>{t.build}<ArrowRight size={12} />{t.test}<ArrowRight size={12} />{t.revise}</p></div>
-    <Piece progress={progress} reduced={reduced} className="approach-piece approach-project" from={{ y: 38, scale: .8, opacity: 0 }} to={{ x: -72, y: -72, rotate: -9 }} range={[.02, .3]} action="reveal-project"><BookOpen size={31} weight="duotone" /><strong>D-Friend</strong></Piece>
-    <Piece progress={progress} reduced={reduced} className="approach-piece approach-research" from={{ y: 38, scale: .8, opacity: 0 }} to={{ x: 75, y: -25, rotate: 7 }} range={[.12, .4]} action="reveal-research"><Graph size={29} /><strong>{t.research}</strong></Piece>
-    <Piece progress={progress} reduced={reduced} className="approach-piece approach-question" from={{ y: 38, scale: .8, opacity: 0 }} to={{ x: -15, y: 94, rotate: -4 }} range={[.23, .54]} action="reveal-question"><TreeStructure size={27} /><strong>{t.idea}</strong></Piece>
-  </div>;
   if (id === 'dfriend') return <OpeningFolder progress={progress} reduced={reduced} language={language} />;
   if (id === 'pilot') return <div className="scene-illustration scope-study" data-illustration="trim-scope">
     {t.scope.map((label, index) => <Piece key={label} progress={progress} reduced={reduced} className={`scope-extra extra-${index}`} from={{ rotate: [-7, 5, -2][index], y: [-8, 8, 0][index] }} to={{ x: [-74, 76, 48][index], y: [-70, -43, -94][index], rotate: [-19, 17, 12][index], opacity: .22 }} range={[.12 + index * .07, .43 + index * .05]} action="discard-scope"><motion.span style={{ visibility: reduced ? 'hidden' : discardedLabel }}>{label}</motion.span><i /><i /><i /></Piece>)}

@@ -47,7 +47,7 @@ let browser;
     await page.locator('[data-scene="dfriend"] [data-branch="seventeen"]').click();
     await page.waitForFunction(()=>document.querySelector('#journey').dataset.current==='seventeen');
     await page.waitForTimeout(800);
-    assert.equal(await page.locator('#journey').getAttribute('data-path'),'approach,dfriend,seventeen,scores,pilot,research,idea,notebook');
+    assert.equal(await page.locator('#journey').getAttribute('data-path'),'dfriend,seventeen,scores,pilot,research,idea,notebook');
     results.push(`${width}px: text clears between scenes; popup freezes moving scene; same-scroll resume, reverse wheel and branch settle correctly`);
     await page.close();
   }
