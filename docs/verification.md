@@ -4,19 +4,19 @@ Updated 2026-10-05, Asia/Ho_Chi_Minh. The portfolio runs locally at http://127.0
 
 ## Identity and motion redesign
 
-The hero introduces Eric / Nguyễn Khánh Trình in one short paragraph. The repeated introduction scene and its miniature desk have been removed. On desktop the original right-hand desk stays in place while the left intro clears; reverse scrolling restores the intro. The journey proceeds directly through D-Friend → pilot → research → idea → notebook. Project objects on the desk still start directly at their subjects.
+The hero introduces Eric / Nguyễn Khánh Trình in one short paragraph. The repeated introduction scene and its miniature desk have been removed. On desktop the original right-hand desk stays in place while the large name changes into a short intro on the left; reverse scrolling restores the name. The journey proceeds directly through D-Friend → pilot → research → idea → notebook. Project objects on the desk still start directly at their subjects.
 
 The repeated full-width horizontal slides have been replaced by small camera shifts, scale, and fades. The outgoing text clears before incoming text appears. Illustrations follow the subject: workspace objects reveal, a D-Friend folder opens, extra scope moves aside, three research conditions separate, and an unbuilt question is placed on the desk. Native scrolling drives Motion values through a damped spring; no wheel interception or per-frame React state drives the animations. Each scene retains 180vh of travel, with its final 24% reserved for a transition.
 
 ## Checks
 
 - `npm run build`: TypeScript and Vite passed on the final source.
-- `npm run verify`: passed against the production preview after the single-intro, retained-desk, semantic-motion, and reduced-motion contrast changes. Evidence: `artifacts/browser-verification.json`.
+- `npm run verify`: passed against the production preview after the name-to-intro, retained-desk, semantic-motion, and reduced-motion contrast changes. Evidence: `artifacts/browser-verification.json`.
 - The full suite covers the five-scene scroll route, reverse scrolling, keyboard branches, preserving travelled history, returning without duplicates, next/previous navigation, and desk shortcuts.
 - All seven detailed popup hashes work. Opening a popup freezes ongoing illustration motion; closing restores the exact scroll position, route, scene, and originating button focus.
 - English remains the default on fresh visits, including a Vietnamese browser locale. Manual language and appearance choices persist; language switching in the reader retains the selected entry.
 - All five scenes retain reading space and visible action buttons at 320, 390, 600, 768, 900, 1024, and 1440 pixels, with no horizontal document overflow. Mobile checks use 844px height; other responsive checks use 800px height.
-- Axe WCAG 2 / 2.1 AA passes for the hero and D-Friend scene in both appearances, the Vietnamese research reader, and the branched static reduced-motion route. Automated checks do not amount to a complete accessibility certification.
+- Axe WCAG 2 / 2.1 AA passes for the hero and D-Friend scene in both appearances, the desktop scroll intro, the Vietnamese research reader, and the branched static reduced-motion route. Automated checks do not amount to a complete accessibility certification.
 - Reduced motion presents complete static pages and illustration end states. The low-contrast labels on discarded sheets disappear as the sheets fade; complete explanations remain in the scene text.
 - Exact email and D-Friend link destinations were checked; no runtime errors were recorded.
 

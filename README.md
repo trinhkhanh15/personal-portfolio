@@ -2,7 +2,7 @@
 
 A bilingual personal portfolio for Eric Nguyen / Nguyễn Khánh Trình. A calm, tactile desk leads into a branching scroll journey through projects, research, unfinished ideas, and personal notes.
 
-The hero introduces Eric once. Scroll clears the introduction while retaining the original desk on the right, then enters the work. Folders open, scope moves aside, and research paths separate as each scene unfolds. Follow the default route or choose a connected thought to redirect it. Full stories open in reading popups; closing them resumes the same position. Reduced motion presents static vertical pages.
+The hero introduces Eric once. Scroll replaces the large name with a short personal introduction while retaining the original desk on the right, then enters the work. Folders open, scope moves aside, and research paths separate as each scene unfolds. Follow the default route or choose a connected thought to redirect it. Full stories open in reading popups; closing them resumes the same position. Reduced motion presents static vertical pages.
 
 ## Run locally
 

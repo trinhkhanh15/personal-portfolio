@@ -1,6 +1,6 @@
 # Eric Nguyen: Open Desk
 
-Status: Open Desk retained; one short hero introduction with content-driven journey motion implemented locally.
+Status: Open Desk retained; hero name-to-intro transition with content-driven journey motion implemented locally.
 Updated: 2026-10-05, Asia/Ho_Chi_Minh.
 
 ## Purpose
@@ -11,7 +11,7 @@ Public identity: Eric Nguyen / Nguyễn Khánh Trình.
 
 ## Selected concept: a desk left open
 
-The site is a personal workspace with things left open, not a chronological biography. A visitor can simply scroll through short scenes or select a connected thought to change the route. The hero introduces Eric once, in a short paragraph. As desktop visitors scroll, the left introduction clears while the original desk stays on the right; the journey then starts at D-Friend. Each scene illustrates its own decision through motion: desk objects reveal, a folder opens, excess scope moves aside, or research conditions separate. Small camera shifts, scaling, and opacity connect scenes; concise text moves upward during reading. Detailed stories remain in separate reading popups.
+The site is a personal workspace with things left open, not a chronological biography. A visitor can simply scroll through short scenes or select a connected thought to change the route. The hero introduces Eric once, in a short paragraph. As desktop visitors scroll, the large name on the left changes into a short personal introduction while the original desk stays on the right; the journey then starts at D-Friend. Each scene illustrates its own decision through motion: desk objects reveal, a folder opens, excess scope moves aside, or research conditions separate. Small camera shifts, scaling, and opacity connect scenes; concise text moves upward during reading. Detailed stories remain in separate reading popups.
 
 The metaphor is a designed digital desk, not a claimed photograph of Eric's room. It does not require an operating-system simulation, a loader, a game, or a tutorial.
 
@@ -28,7 +28,7 @@ The metaphor is a designed digital desk, not a claimed photograph of Eric's room
 
 ### Introduction
 
-Eric's name and a short, natural introduction. The first screen establishes that he builds products, experiments with agents, and learns through trying. A view of the open desk gives immediate access to the work. On desktop, the desk stays in place through a short scroll phase as the introduction fades. Mobile and reduced motion keep a regular vertical flow.
+Eric's name and a short, natural introduction. The first screen establishes that he builds products, experiments with agents, and learns through trying. A view of the open desk gives immediate access to the work. On desktop, the desk stays in place through a short scroll phase as the large name changes into a concise personal introduction. Mobile and reduced motion keep a regular vertical flow.
 
 ### On the desk
 

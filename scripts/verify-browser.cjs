@@ -26,12 +26,17 @@ async function audit(page,label){const r=await new AxeBuilder({page}).withTags([
  await page.evaluate(()=>scrollTo({top:440,behavior:'instant'}));await page.waitForTimeout(750);
  const held=await page.locator('.desk-surface').boundingBox();
  assert.ok(Math.abs(held.y-start.y)<2,'Original desk stays in place as introduction clears');
- assert.ok((await pose(page,'.hero-copy')).opacity<.01,'Hero introduction clears');
+ assert.ok((await pose(page,'.hero-copy')).opacity<.01,'Large name clears');
+ assert.ok((await pose(page,'.hero-scroll-intro')).opacity>.99,'Short intro replaces the name');
+ assert.match(await page.locator('.scroll-intro-body').innerText(),/Eric.*Nguyễn Khánh Trình.*computer science.*Vietnam/);
+ assert.equal(await page.locator('.hero-scroll-intro').getAttribute('inert'),null);
+ await audit(page,'Scroll introduction');
  assert.equal(await page.locator('.hero-copy').getAttribute('inert'),'');
  await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(750);
  assert.ok((await pose(page,'.hero-copy')).opacity>.99,'Reverse scroll restores introduction');
  assert.equal(await page.locator('.hero-copy').getAttribute('inert'),null);
- results.push('Short personal introduction appears once; original desk holds through scroll; reverse restores intro');
+ assert.ok((await pose(page,'.hero-scroll-intro')).opacity<.01,'Reverse hides short intro');
+ results.push('Large name becomes short personal intro beside original desk; reverse restores the name');
 
  await at(page,'dfriend',.05);const closed=await pose(page,'.study-cover');
  await at(page,'dfriend',.55);const opened=await pose(page,'.study-cover');

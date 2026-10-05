@@ -24,6 +24,8 @@ export const ui = {
   en: {
     skip: 'Skip to content', desk: 'The desk', notes: 'Some notes', contact: 'Say hello',
     intro: 'Computer science student in Vietnam. I build products, test ideas, and change my mind when the evidence says I should.',
+    scrollIntroTitle: 'I build to find out.',
+    scrollIntro: 'I’m Eric — Nguyễn Khánh Trình, a computer science student in Vietnam. I build products and explore agents by testing ideas. I’m betting on what I’ll learn and who I’ll build with next.',
     name: 'Nguyễn Khánh Trình', role: 'A builder, figuring things out.',
     heroLink: 'Take a look around', deskTitle: 'A few things left open.',
     deskBody: 'Some are being built. Some are being tested. One is still just a thought.',
@@ -46,6 +48,8 @@ export const ui = {
   vi: {
     skip: 'Đến nội dung', desk: 'Bàn làm việc', notes: 'Vài ghi chú', contact: 'Bắt chuyện',
     intro: 'Mình học Khoa học máy tính ở Việt Nam. Thích tự xây để thử ý tưởng, rồi sửa lại khi thực tế bảo mình sai.',
+    scrollIntroTitle: 'Xây để biết mình có sai không.',
+    scrollIntro: 'Mình là Trình, thường dùng tên Eric, đang học Khoa học máy tính ở Việt Nam. Mình tự xây sản phẩm, thử nghiệm với agent và sửa lại khi thực tế bảo mình sai. Mình đặt cược vào những thứ sẽ học và những người sẽ cùng xây tiếp.',
     name: 'Nguyễn Khánh Trình', role: 'Thích xây, vẫn đang tìm đường.',
     heroLink: 'Ghé xem một chút', deskTitle: 'Vài thứ vẫn đang mở.',
     deskBody: 'Có thứ đang xây. Có thứ đang kiểm chứng. Có thứ mới chỉ là một suy nghĩ.',
